@@ -1,81 +1,73 @@
 # conservation-spectral-js
 
-TypeScript SDK for spectral graph theory conservation analysis — Laplacian construction, eigendecomposition, anomaly detection, and spectral fingerprinting. Pure TypeScript, zero dependencies.
+TypeScript SDK for spectral graph conservation analysis — Laplacian eigenvalues, conservation ratios, anomaly detection, and spectral fingerprints. Zero dependencies.
 
 ## What This Gives You
 
-- **Tension graphs** — Weighted undirected graphs with `Float64Array` storage for fast spectral math
-- **Laplacian matrices** — Unnormalized, normalized, and random-walk variants
-- **Jacobi eigensolver** — Pure TypeScript eigenvalue/eigenvector computation (no native deps)
-- **Conservation ratios** — Measure how each eigenvector preserves vertex attributes
-- **Anomaly detection** — Conservation violations, structural breaks, and spectral outliers with fix suggestions
-- **Spectral fingerprints** — Eigenvalue-based fingerprints for comparing graph states
-- **Real-time tracking** — Sliding-window conservation monitor with alerts
+- **Tension graphs** — weighted directed graphs with typed edge attributes
+- **Laplacian decomposition** — eigenvalue computation with Float64Array storage
+- **Conservation ratios** — CR = λ₂/λₙ with spectral gap and Cheeger constant
+- **Anomaly detection** — classify anomalies with severity and suggested corrections
+- **Spectral fingerprints** — graph identity hashing for cross-system comparison
+- **Zero dependencies** — pure TypeScript, runs in Node.js and browsers
 
 ## Quick Start
 
 ```typescript
 import {
-  createGraph, addVertex, addEdge,
-  buildLaplacian, jacobiEigen,
-  conservationRatio, spectralGap,
-  detectAnomalies,
+  createGraph, addEdge, buildLaplacian,
+  eigendecompose, conservationRatio, analyze
 } from "conservation-spectral";
 
 // Build a tension graph
-const g = createGraph(false);
-["C", "G", "Am", "F"].forEach(c => addVertex(g, c));
-addEdge(g, "C", "G", 0.8);
-addEdge(g, "G", "Am", 0.6);
-addEdge(g, "Am", "F", 0.4);
+const g = createGraph();
+addEdge(g, "A", "B", { tension: 0.8 });
+addEdge(g, "B", "C", { tension: 0.5 });
+addEdge(g, "C", "A", { tension: 0.3 });
 
 // Spectral analysis
-const lap = buildLaplacian(g, "unnormalized");
-const eigen = jacobiEigen(lap.matrix, lap.n, lap.n * lap.n * 10);
+const L = buildLaplacian(g);
+const eigen = eigendecompose(L);
+const cr = conservationRatio(eigen.values);
+console.log(`Conservation ratio: ${cr.toFixed(4)}`);
 
-console.log(`Spectral gap: ${spectralGap(eigen)}`);
-console.log(`Eigenvalues: ${Array.from(eigen.values)}`);
+// Full report
+const report = analyze(g);
+console.log(report);
 ```
-
-See [`examples/token-analysis.ts`](examples/token-analysis.ts) for a full analysis demo.
 
 ## API Reference
 
-| Module | Key Exports |
-|--------|-------------|
-| `graph` | `createGraph`, `addVertex`, `addEdge`, `addAttribute`, `adjacencyMatrix` |
-| `laplacian` | `buildLaplacian` |
-| `eigen` | `jacobiEigen` |
-| `conservation` | `conservationRatio`, `spectralGap`, `cheegerConstant`, `analyze` |
-| `tracker` | `ConservationTracker`, `Alert` |
-| `fingerprint` | `spectralFingerprint`, `compareFingerprints` |
-| `anomaly` | `detectAnomalies`, `Anomaly`, `AnomalyType`, `Fix` |
+| Module | Exports | Description |
+|---|---|---|
+| `graph` | `createGraph`, `addEdge`, `addVertex`, `adjacencyMatrix` | Graph construction |
+| `laplacian` | `buildLaplacian` | Graph → Laplacian matrix |
+| `eigen` | `eigendecompose`, `EigenResult` | Eigenvalue computation |
+| `conservation` | `conservationRatio`, `spectralGap`, `cheegerConstant` | Core metrics |
+| `tracker` | `ConservationTracker`, `Alert` | Time-series monitoring |
+| `fingerprint` | `spectralFingerprint`, `compareFingerprints` | Graph identity |
+| `anomaly` | `detectAnomalies`, `Anomaly`, `Fix` | Detection and repair |
 
 ## How It Fits
 
-Part of the conservation spectral ecosystem — this is the **TypeScript implementation**. Cross-language siblings:
+The **TypeScript SDK** of the conservation spectral ecosystem — API-identical to:
 
-- **Rust**: [conservation-spectral](https://github.com/SuperInstance/conservation-spectral) — core engine
-- **Python**: [conservation-spectral-python](https://github.com/SuperInstance/conservation-spectral-python) — Python SDK
-- **Ada**: [conservation-spectral-ada](https://github.com/SuperInstance/conservation-spectral-ada) — DO-178C certified
-- **Conformance**: [conservation-conformance](https://github.com/SuperInstance/conservation-conformance) — cross-language test suite
+- [conservation-spectral-python](https://github.com/SuperInstance/conservation-spectral-python) — Python SDK
+- [conservation-spectral-ada](https://github.com/SuperInstance/conservation-spectral-ada) — Ada port
+- [conservation-conformance](https://github.com/SuperInstance/conservation-conformance) — cross-language conformance tests
+- [conservation-protocol](https://github.com/SuperInstance/conservation-protocol) — Rust messaging protocol
 
 ## Testing
 
 ```bash
-npm install
-npm test
+npm test  # 32 tests across 4 test files
 ```
-
-Uses [Vitest](https://vitest.dev/) with 4 test suites covering eigendecomposition, graph construction, conservation analysis, and real-time tracking.
 
 ## Installation
 
 ```bash
 npm install conservation-spectral
 ```
-
-Zero runtime dependencies. Requires TypeScript ≥ 5.4 for development.
 
 ## License
 
