@@ -1,5 +1,9 @@
 # conservation-spectral-js
 
+[![npm version](https://img.shields.io/npm/v/cocapn)](https://www.npmjs.com/package/cocapn) [![SuperInstance](https://img.shields.io/badge/SuperInstance-Ecosystem-blue)](https://github.com/SuperInstance)
+
+
+
 TypeScript SDK for spectral graph conservation analysis — Laplacian eigenvalues, conservation ratios, anomaly detection, and spectral fingerprints. Zero dependencies.
 
 ## What This Gives You
@@ -72,3 +76,7 @@ npm install conservation-spectral
 ## License
 
 MIT
+
+## Documentation
+
+📚 [OpenConstruct Docs](https://github.com/SuperInstance/openconstruct-docs)
