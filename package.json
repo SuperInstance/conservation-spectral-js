@@ -1,24 +1,37 @@
 {
   "name": "conservation-spectral",
-  "version": "0.1.0",
-  "description": "Conservation Spectral SDK — spectral graph theory for conservation analysis",
+  "version": "0.1.1",
+  "description": "Conservation Spectral SDK \u2014 spectral graph theory for conservation analysis",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "node --experimental-vm-modules node_modules/.bin/vitest run",
     "test:watch": "vitest",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["spectral", "graph", "laplacian", "conservation", "eigenvalue", "fingerprint"],
+  "keywords": [
+    "spectral",
+    "graph",
+    "laplacian",
+    "conservation",
+    "eigenvalue",
+    "fingerprint"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SuperInstance/conservation-spectral-js"
+    "url": "git+https://github.com/SuperInstance/conservation-spectral-js.git"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
+  },
+  "homepage": "https://github.com/SuperInstance/conservation-spectral-js#readme",
+  "bugs": {
+    "url": "https://github.com/SuperInstance/conservation-spectral-js/issues"
   }
 }
